@@ -7,11 +7,12 @@ const streamPipeline = promisify(pipeline);
 
 const displayUrl = "https://wsaseno.de/digiOH_files/";
 
-const { 
+const {
   sleep,
   getLightxConfig,
   addWatermark,
-  getFtpConfig } = require("./utils");
+  getFtpConfig,
+} = require("./utils");
 
 function getConfig() {
   const config = getFtpConfig();
@@ -57,7 +58,7 @@ async function copyFile(fileUrl, remoteFile) {
     await addWatermark(localFile, watermarkPath, watermarkedFile);
 
     console.log(">> Uploading to FTP...");
-    return await uploadFile(watermarkedFile, remoteFile);    
+    return await uploadFile(watermarkedFile, remoteFile);
   } catch (err) {
     console.error("Error:", err);
   } finally {

@@ -8,24 +8,27 @@ const path = require("path");
 const sharp = require("sharp");
 
 const configPathFtp = path.join(__dirname, "digiOH_PhotoBox_config_ftp.json");
-const configPathLightX = path.join(__dirname, "digiOH_PhotoBox_config_lightx.json");
+const configPathLightX = path.join(
+  __dirname,
+  "digiOH_PhotoBox_config_lightx.json",
+);
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function getLightxConfig(){
+function getLightxConfig() {
   if (fs.existsSync(configPathLightX)) {
     const config = JSON.parse(fs.readFileSync(configPathLightX, "utf8"));
     return config;
-  } 
+  }
 }
 
-function getFtpConfig(){
+function getFtpConfig() {
   if (fs.existsSync(configPathFtp)) {
     const config = JSON.parse(fs.readFileSync(configPathFtp, "utf8"));
     return config;
-  } 
+  }
 }
 
 async function addWatermark(inputPath, watermarkPath, outputPath) {
@@ -43,8 +46,8 @@ async function addWatermark(inputPath, watermarkPath, outputPath) {
       {
         input: watermark,
         gravity: "southeast", // bottom-right
-        blend: "over"
-      }
+        blend: "over",
+      },
     ])
     .toFile(outputPath);
 }

@@ -6,7 +6,10 @@ const fs = require("fs");
 
 const bodyParser = require("body-parser");
 const configPathFtp = path.join(__dirname, "digiOH_PhotoBox_config_ftp.json");
-const configPathLightX = path.join(__dirname, "digiOH_PhotoBox_config_lightx.json");
+const configPathLightX = path.join(
+  __dirname,
+  "digiOH_PhotoBox_config_lightx.json",
+);
 
 const { pipeline } = require("stream");
 const { promisify } = require("util");
@@ -17,19 +20,18 @@ const PORT = 3000;
 
 const displayUrl = "https://wsaseno.de/digiOH_files/";
 const imageLocation = "_sfpg_data/image/";
-const subFolderOriImage = ""; // "DigiOH_capture_images/"; 
+const subFolderOriImage = ""; // "DigiOH_capture_images/";
 
 const QRCode = require("qrcode");
 
-const { 
-  uploadToFTP, 
-  uploadFile, 
-  copyFile, 
-  downloadFile } = require("./ftpUtils");
+const {
+  uploadToFTP,
+  uploadFile,
+  copyFile,
+  downloadFile,
+} = require("./ftpUtils");
 
-const { 
-  generatedImage,
-  LightXEditorAiType, } = require("./LightXstudio");
+const { generatedImage, LightXEditorAiType } = require("./LightXstudio");
 
 ////////////////////////////////
 // Uplolad photos to local server
@@ -39,7 +41,7 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-app.use(express.json()); 
+app.use(express.json());
 
 // Serve static files in /public
 app.use(express.static("public"));
@@ -56,7 +58,9 @@ app.post("/upload", async (req, res) => {
   //---- START - get picture data from camera, base64 encoded
   const { base64data, imageName, selectedApi } = req.body;
   if (!base64data || !imageName || !selectedApi) {
-    return res.status(400).json({ error: "Missing base64data or imageName or selectedApi" });
+    return res
+      .status(400)
+      .json({ error: "Missing base64data or imageName or selectedApi" });
   }
 
   const matches = base64data.match(/^data:(.+);base64,(.+)$/);
@@ -73,7 +77,11 @@ app.post("/upload", async (req, res) => {
 
   const filename = `DigiOH_GambarRobot_${Date.now()}.${extension}`;
   const filepath = path.join(`${uploadDir}/`, filename);
-  const oriImageUrl = subFolderOriImage + "DigiOH_PhotoBox_" + new Date().toISOString().split(".")[0].replace(/[^\d]/gi, "") + ".jpeg";
+  const oriImageUrl =
+    subFolderOriImage +
+    "DigiOH_PhotoBox_" +
+    new Date().toISOString().split(".")[0].replace(/[^\d]/gi, "") +
+    ".jpeg";
 
   try {
     await fs.promises.writeFile(filepath, buffer);
@@ -82,17 +90,19 @@ app.post("/upload", async (req, res) => {
     const oriImageUrlComplete = await uploadFile(filepath, oriImageUrl);
     console.log(`remoteFile: ${oriImageUrlComplete}`);
 
-    console.log(`>>generatedImage ...`);
-    const generatedImageResult = await generatedImage(`${displayUrl}${oriImageUrl}`, selectedApi);
+    console.log(">>generatedImage ...");
+    const generatedImageResult = await generatedImage(
+      `${displayUrl}${oriImageUrl}`,
+      selectedApi,
+    );
     console.log("Generated image result:", generatedImageResult);
 
-    const qrDataUrl = await QRCode.toDataURL(generatedImageResult);// Always respond with JSON
+    const qrDataUrl = await QRCode.toDataURL(generatedImageResult); // Always respond with JSON
     res.json({
       status: "ok",
       imageUrl: generatedImageResult,
-      qr: qrDataUrl
+      qr: qrDataUrl,
     });
-
   } catch (err) {
     res.status(500).json({ error: "Error saving file", details: err.message });
   }
@@ -116,7 +126,6 @@ app.listen(PORT, () => {
   console.log(`Visit http://localhost:${PORT} in your browser`);
   console.log("Press Ctrl+C to stop the server");
 });
-
 
 ////////////////////////////////
 // Save config FTP

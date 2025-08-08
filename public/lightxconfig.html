@@ -1,290 +1,470 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>DigiOH PhotoBox AI Configuration</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2em;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2em;
+      }
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: #fff;
-            padding: 2em;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
+      .container {
+        max-width: 1000px;
+        margin: auto;
+        background: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
 
-        h2 {
-            text-align: center;
-        }
+      h2 {
+        text-align: center;
+      }
 
-        .form-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1em;
-        }
+      .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+      }
 
-        .form-row label {
-            flex: 0 0 200px;
-        }
+      .form-row label {
+        flex: 0 0 200px;
+      }
 
-        .form-row input[type="text"],
-        .form-row input[type="password"] {
-            flex: 1 1 auto;
-            padding: 0.5em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+      .form-row input[type="text"],
+      .form-row input[type="password"] {
+        flex: 1 1 auto;
+        padding: 0.5em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
 
-        .button-row {
-            text-align: right;
-            margin-top: 1em;
-        }
+      .button-row {
+        text-align: right;
+        margin-top: 1em;
+      }
 
-        button {
-            padding: 0.5em 1.5em;
-            border: none;
-            border-radius: 4px;
-            background: #0078d7;
-            color: #fff;
-            font-size: 1em;
-            cursor: pointer;
-            margin-left: 0.5em;
-        }
+      button {
+        padding: 0.5em 1.5em;
+        border: none;
+        border-radius: 4px;
+        background: #0078d7;
+        color: #fff;
+        font-size: 1em;
+        cursor: pointer;
+        margin-left: 0.5em;
+      }
 
-        button:active {
-            background: #005fa3;
-        }
+      button:active {
+        background: #005fa3;
+      }
 
-        #status {
-            margin-top: 1em;
-            text-align: center;
-            color: #0078d7;
-        }
+      #status {
+        margin-top: 1em;
+        text-align: center;
+        color: #0078d7;
+      }
 
-        .promptInput {
-            flex: 1 1 auto;
-            padding: 0.5em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+      .promptInput {
+        flex: 1 1 auto;
+        padding: 0.5em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <form id="configForm" autocomplete="off">
-            <!-- API -->
-            <div class="form-row">
-                <label for="lightXApi">LightX API:</label>
-                <input type="text" id="lightXApi" required>
-            </div>
+      <form id="configForm" autocomplete="off">
+        <!-- API -->
+        <div class="form-row">
+          <label for="lightXApi">LightX API:</label>
+          <input type="text" id="lightXApi" required />
+        </div>
 
-            <!-- change OUTFIT -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Change Outfit</legend>
-            <div class="form-row">
-                <label for="textprompt_outfit">Prompt:</label>
-                <textarea id="textprompt_outfit" rows="8" class="promptInput"></textarea>
-            </div>
-            </fieldset>
+        <!-- change OUTFIT -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">
+            Change Outfit
+          </legend>
+          <div class="form-row">
+            <label for="textprompt_outfit">Prompt:</label>
+            <textarea
+              id="textprompt_outfit"
+              rows="8"
+              class="promptInput"
+            ></textarea>
+          </div>
+        </fieldset>
 
-            <!-- change BACKGROUND_GENERATOR -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Background Change</legend>
-            <div class="form-row">
-                <label for="textprompt_background_generator">Prompt:</label>
-                <textarea id="textprompt_background_generator" rows="8" class="promptInput"></textarea>
-            </div>
-            </fieldset>
+        <!-- change BACKGROUND_GENERATOR -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">
+            Background Change
+          </legend>
+          <div class="form-row">
+            <label for="textprompt_background_generator">Prompt:</label>
+            <textarea
+              id="textprompt_background_generator"
+              rows="8"
+              class="promptInput"
+            ></textarea>
+          </div>
+        </fieldset>
 
-            <!-- change CARTOON -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Cartoon Style</legend>
-                <div class="form-row">
-                    <label for="styleimageurl_cartoon">Style URL:</label>
-                    <input type="text" id="styleimageurl_cartoon" required>
-                    <button type="button" onclick="loadImage('styleimageurl_cartoon', 'cartoonStylePreview')">Load</button>
-                </div>
-                <div class="form-row" style="justify-content:center;">
-                    <img id="cartoonStylePreview" src="" alt="Cartoon Style Preview"
-                        style="max-width:300px; display:none; border:1px solid #ccc; border-radius:4px; margin-top:1em;">
-                </div>
-                <div class="form-row">
-                    <label for="textprompt_cartoon">Prompt:</label>
-                    <textarea id="textprompt_cartoon" rows="8" class="promptInput"></textarea>
-                </div>
-            </fieldset>
+        <!-- change CARTOON -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">
+            Cartoon Style
+          </legend>
+          <div class="form-row">
+            <label for="styleimageurl_cartoon">Style URL:</label>
+            <input type="text" id="styleimageurl_cartoon" required />
+            <button
+              type="button"
+              onclick="loadImage('styleimageurl_cartoon', 'cartoonStylePreview')"
+            >
+              Load
+            </button>
+          </div>
+          <div class="form-row" style="justify-content: center">
+            <img
+              id="cartoonStylePreview"
+              src=""
+              alt="Cartoon Style Preview"
+              style="
+                max-width: 300px;
+                display: none;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-top: 1em;
+              "
+            />
+          </div>
+          <div class="form-row">
+            <label for="textprompt_cartoon">Prompt:</label>
+            <textarea
+              id="textprompt_cartoon"
+              rows="8"
+              class="promptInput"
+            ></textarea>
+          </div>
+        </fieldset>
 
-            <!-- change AVATAR -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Create Avatar</legend>
-                <div class="form-row">
-                    <label for="styleimageurl_avatar">Style URL:</label>
-                    <input type="text" id="styleimageurl_avatar" required>
-                    <button type="button" onclick="loadImage('styleimageurl_avatar', 'avatarStylePreview')">Load</button>
-                </div>
-                <div class="form-row" style="justify-content:center;">
-                    <img id="avatarStylePreview" src="" alt="Cartoon Style Preview"
-                        style="max-width:300px; display:none; border:1px solid #ccc; border-radius:4px; margin-top:1em;">
-                </div>
-                <div class="form-row">
-                    <label for="textprompt_avatar">Prompt:</label>
-                    <textarea id="textprompt_avatar" rows="8" class="promptInput"></textarea>
-                </div>
-            </fieldset>
+        <!-- change AVATAR -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">
+            Create Avatar
+          </legend>
+          <div class="form-row">
+            <label for="styleimageurl_avatar">Style URL:</label>
+            <input type="text" id="styleimageurl_avatar" required />
+            <button
+              type="button"
+              onclick="loadImage('styleimageurl_avatar', 'avatarStylePreview')"
+            >
+              Load
+            </button>
+          </div>
+          <div class="form-row" style="justify-content: center">
+            <img
+              id="avatarStylePreview"
+              src=""
+              alt="Cartoon Style Preview"
+              style="
+                max-width: 300px;
+                display: none;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-top: 1em;
+              "
+            />
+          </div>
+          <div class="form-row">
+            <label for="textprompt_avatar">Prompt:</label>
+            <textarea
+              id="textprompt_avatar"
+              rows="8"
+              class="promptInput"
+            ></textarea>
+          </div>
+        </fieldset>
 
-            <!-- change AVATAR 2 -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Create Avatar 2</legend>
-                <div class="form-row">
-                    <label for="styleimageurl_avatar2">Style URL:</label>
-                    <input type="text" id="styleimageurl_avatar2" required>
-                    <button type="button" onclick="loadImage('styleimageurl_avatar2', 'avatarStylePreview2')">Load</button>
-                </div>
-                <div class="form-row" style="justify-content:center;">
-                    <img id="avatarStylePreview2" src="" alt="Cartoon Style Preview"
-                        style="max-width:300px; display:none; border:1px solid #ccc; border-radius:4px; margin-top:1em;">
-                </div>
-                <div class="form-row">
-                    <label for="textprompt_avatar2">Prompt:</label>
-                    <textarea id="textprompt_avatar2" rows="8" class="promptInput"></textarea>
-                </div>
-            </fieldset>
+        <!-- change AVATAR 2 -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">
+            Create Avatar 2
+          </legend>
+          <div class="form-row">
+            <label for="styleimageurl_avatar2">Style URL:</label>
+            <input type="text" id="styleimageurl_avatar2" required />
+            <button
+              type="button"
+              onclick="loadImage('styleimageurl_avatar2', 'avatarStylePreview2')"
+            >
+              Load
+            </button>
+          </div>
+          <div class="form-row" style="justify-content: center">
+            <img
+              id="avatarStylePreview2"
+              src=""
+              alt="Cartoon Style Preview"
+              style="
+                max-width: 300px;
+                display: none;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-top: 1em;
+              "
+            />
+          </div>
+          <div class="form-row">
+            <label for="textprompt_avatar2">Prompt:</label>
+            <textarea
+              id="textprompt_avatar2"
+              rows="8"
+              class="promptInput"
+            ></textarea>
+          </div>
+        </fieldset>
 
-            <!-- change FACE_SWAP -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Face Swap</legend>
-                <div class="form-row">
-                    <label for="styleimageurl_face_swap">Style URL:</label>
-                    <input type="text" id="styleimageurl_face_swap" required>
-                    <button type="button" onclick="loadImage('styleimageurl_face_swap', 'face_swapStylePreview')">Load</button>
-                </div>
-                <div class="form-row" style="justify-content:center;">
-                    <img id="face_swapStylePreview" src="" alt="virtual try-on Style Preview"
-                        style="max-width:300px; display:none; border:1px solid #ccc; border-radius:4px; margin-top:1em;">
-                </div>
-            </fieldset>
+        <!-- change FACE_SWAP -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">Face Swap</legend>
+          <div class="form-row">
+            <label for="styleimageurl_face_swap">Style URL:</label>
+            <input type="text" id="styleimageurl_face_swap" required />
+            <button
+              type="button"
+              onclick="loadImage('styleimageurl_face_swap', 'face_swapStylePreview')"
+            >
+              Load
+            </button>
+          </div>
+          <div class="form-row" style="justify-content: center">
+            <img
+              id="face_swapStylePreview"
+              src=""
+              alt="virtual try-on Style Preview"
+              style="
+                max-width: 300px;
+                display: none;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-top: 1em;
+              "
+            />
+          </div>
+        </fieldset>
 
-            <!-- change virtual try on -->
-            <fieldset style="margin-bottom:2em; border:1px solid #ccc; border-radius:6px; padding:1em;">
-                <legend style="font-weight:bold; color:#0078d7;">Try On</legend>
-                <div class="form-row">
-                    <label for="styleimageurl_aivirtualtryon">Style URL:</label>
-                    <input type="text" id="styleimageurl_aivirtualtryon" required>
-                    <button type="button" onclick="loadImage('styleimageurl_aivirtualtryon', 'aivirtualtryonStylePreview')">Load</button>
-                </div>
-                <div class="form-row" style="justify-content:center;">
-                    <img id="aivirtualtryonStylePreview" src="" alt="virtual try-on Style Preview"
-                        style="max-width:300px; display:none; border:1px solid #ccc; border-radius:4px; margin-top:1em;">
-                </div>
-            </fieldset>
+        <!-- change virtual try on -->
+        <fieldset
+          style="
+            margin-bottom: 2em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1em;
+          "
+        >
+          <legend style="font-weight: bold; color: #0078d7">Try On</legend>
+          <div class="form-row">
+            <label for="styleimageurl_aivirtualtryon">Style URL:</label>
+            <input type="text" id="styleimageurl_aivirtualtryon" required />
+            <button
+              type="button"
+              onclick="loadImage('styleimageurl_aivirtualtryon', 'aivirtualtryonStylePreview')"
+            >
+              Load
+            </button>
+          </div>
+          <div class="form-row" style="justify-content: center">
+            <img
+              id="aivirtualtryonStylePreview"
+              src=""
+              alt="virtual try-on Style Preview"
+              style="
+                max-width: 300px;
+                display: none;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-top: 1em;
+              "
+            />
+          </div>
+        </fieldset>
 
-            <div class="button-row">
-                <button type="submit">Save</button>
-                <button type="button" id="loadBtn">Load</button>
-            </div>
-        </form>
-        <div id="status"></div>
+        <div class="button-row">
+          <button type="submit">Save</button>
+          <button type="button" id="loadBtn">Load</button>
+        </div>
+      </form>
+      <div id="status"></div>
     </div>
     <script>
-        //button interaction
-        function loadImage(urlId, previewId) {
-            const url = document.getElementById(urlId).value.trim();
-            const img = document.getElementById(previewId);
-            if (url) {
-                img.src = url;
-                img.style.display = 'block';
-            } else {
-                img.src = '';
-                img.style.display = 'none';
-            }
-        };
-
+      //button interaction
+      function loadImage(urlId, previewId) {
+        const url = document.getElementById(urlId).value.trim();
+        const img = document.getElementById(previewId);
+        if (url) {
+          img.src = url;
+          img.style.display = "block";
+        } else {
+          img.src = "";
+          img.style.display = "none";
+        }
+      }
     </script>
     <script>
-        // Save config to server
-        document.getElementById('configForm').onsubmit = async function (e) {
-            e.preventDefault();
+      // Save config to server
+      document.getElementById("configForm").onsubmit = async function (e) {
+        e.preventDefault();
 
-            // Show confirmation dialog
-            const confirmed = confirm("Are you sure you want to save these configurations?");
-            if (!confirmed) {
-                return; // If not confirmed, exit the function
-            }
+        // Show confirmation dialog
+        const confirmed = confirm(
+          "Are you sure you want to save these configurations?",
+        );
+        if (!confirmed) {
+          return; // If not confirmed, exit the function
+        }
 
-            const config = {
+        const config = {
+          lightXApi: document.getElementById("lightXApi").value,
 
-                lightXApi: document.getElementById('lightXApi').value,
+          textprompt_outfit: document.getElementById("textprompt_outfit").value,
+          textprompt_background_generator: document.getElementById(
+            "textprompt_background_generator",
+          ).value,
 
-                textprompt_outfit: document.getElementById('textprompt_outfit').value,
-                textprompt_background_generator: document.getElementById('textprompt_background_generator').value,
+          styleimageurl_face_swap: document.getElementById(
+            "styleimageurl_face_swap",
+          ).value,
+          styleimageurl_aivirtualtryon: document.getElementById(
+            "styleimageurl_aivirtualtryon",
+          ).value,
 
-                styleimageurl_face_swap: document.getElementById('styleimageurl_face_swap').value,
-                styleimageurl_aivirtualtryon: document.getElementById('styleimageurl_aivirtualtryon').value,
+          styleimageurl_cartoon: document.getElementById(
+            "styleimageurl_cartoon",
+          ).value,
+          textprompt_cartoon:
+            document.getElementById("textprompt_cartoon").value,
 
-                styleimageurl_cartoon: document.getElementById('styleimageurl_cartoon').value,
-                textprompt_cartoon: document.getElementById('textprompt_cartoon').value,
+          styleimageurl_avatar: document.getElementById("styleimageurl_avatar")
+            .value,
+          textprompt_avatar: document.getElementById("textprompt_avatar").value,
 
-                styleimageurl_avatar: document.getElementById('styleimageurl_avatar').value,
-                textprompt_avatar: document.getElementById('textprompt_avatar').value,
-
-                styleimageurl_avatar2: document.getElementById('styleimageurl_avatar2').value,
-                textprompt_avatar2: document.getElementById('textprompt_avatar2').value,
-
-            };
-            const res = await fetch('/api/config_lightx', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(config)
-            });
-            if (res.ok) {
-                document.getElementById('status').textContent = "Configuration saved to server!";
-            } else {
-                document.getElementById('status').textContent = "Failed to save configuration!";
-            }
+          styleimageurl_avatar2: document.getElementById(
+            "styleimageurl_avatar2",
+          ).value,
+          textprompt_avatar2:
+            document.getElementById("textprompt_avatar2").value,
         };
+        const res = await fetch("/api/config_lightx", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(config),
+        });
+        if (res.ok) {
+          document.getElementById("status").textContent =
+            "Configuration saved to server!";
+        } else {
+          document.getElementById("status").textContent =
+            "Failed to save configuration!";
+        }
+      };
 
-        // Load config from server
-        document.getElementById('loadBtn').onclick = async function () {
-            const res = await fetch('/api/config_lightx');
-            if (res.ok) {
-                const config = await res.json();
-                document.getElementById('lightXApi').value = config.lightXApi || '';
-                document.getElementById('textprompt_outfit').value = config.textprompt_outfit || '';
-                document.getElementById('textprompt_background_generator').value = config.textprompt_background_generator || '';
+      // Load config from server
+      document.getElementById("loadBtn").onclick = async function () {
+        const res = await fetch("/api/config_lightx");
+        if (res.ok) {
+          const config = await res.json();
+          document.getElementById("lightXApi").value = config.lightXApi || "";
+          document.getElementById("textprompt_outfit").value =
+            config.textprompt_outfit || "";
+          document.getElementById("textprompt_background_generator").value =
+            config.textprompt_background_generator || "";
 
-                document.getElementById('styleimageurl_face_swap').value = config.styleimageurl_face_swap || '';
-                document.getElementById('styleimageurl_aivirtualtryon').value = config.styleimageurl_aivirtualtryon || '';
+          document.getElementById("styleimageurl_face_swap").value =
+            config.styleimageurl_face_swap || "";
+          document.getElementById("styleimageurl_aivirtualtryon").value =
+            config.styleimageurl_aivirtualtryon || "";
 
-                document.getElementById('styleimageurl_cartoon').value = config.styleimageurl_cartoon || '';
-                document.getElementById('textprompt_cartoon').value = config.textprompt_cartoon || '';
+          document.getElementById("styleimageurl_cartoon").value =
+            config.styleimageurl_cartoon || "";
+          document.getElementById("textprompt_cartoon").value =
+            config.textprompt_cartoon || "";
 
-                document.getElementById('styleimageurl_avatar').value = config.styleimageurl_avatar || '';
-                document.getElementById('textprompt_avatar').value = config.textprompt_avatar || '';
+          document.getElementById("styleimageurl_avatar").value =
+            config.styleimageurl_avatar || "";
+          document.getElementById("textprompt_avatar").value =
+            config.textprompt_avatar || "";
 
-                document.getElementById('styleimageurl_avatar2').value = config.styleimageurl_avatar2 || '';
-                document.getElementById('textprompt_avatar2').value = config.textprompt_avatar2 || '';
+          document.getElementById("styleimageurl_avatar2").value =
+            config.styleimageurl_avatar2 || "";
+          document.getElementById("textprompt_avatar2").value =
+            config.textprompt_avatar2 || "";
 
-                document.getElementById('status').textContent = "Configuration loaded from server!";
-                
-                //load all images
-                loadImage('styleimageurl_cartoon', 'cartoonStylePreview');
-                loadImage('styleimageurl_avatar', 'avatarStylePreview');
-                loadImage('styleimageurl_avatar2', 'avatarStylePreview2');
-                loadImage('styleimageurl_face_swap', 'face_swapStylePreview');
-                loadImage('styleimageurl_aivirtualtryon', 'aivirtualtryonStylePreview');
+          document.getElementById("status").textContent =
+            "Configuration loaded from server!";
 
-            } else {
-                document.getElementById('status').textContent = "Failed to load configuration!";
-            }
-        };
+          //load all images
+          loadImage("styleimageurl_cartoon", "cartoonStylePreview");
+          loadImage("styleimageurl_avatar", "avatarStylePreview");
+          loadImage("styleimageurl_avatar2", "avatarStylePreview2");
+          loadImage("styleimageurl_face_swap", "face_swapStylePreview");
+          loadImage(
+            "styleimageurl_aivirtualtryon",
+            "aivirtualtryonStylePreview",
+          );
+        } else {
+          document.getElementById("status").textContent =
+            "Failed to load configuration!";
+        }
+      };
     </script>
-</body>
-
+  </body>
 </html>

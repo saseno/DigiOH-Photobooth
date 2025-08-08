@@ -1,44 +1,45 @@
-const { 
-  sleep,
-  getLightxConfig,
-  getFtpConfig } = require("./utils");
+const { sleep, getLightxConfig, getFtpConfig } = require("./utils");
 
-const { 
-  uploadToFTP, 
-  uploadFile, 
-  copyFile, 
-  downloadFile } = require("./ftpUtils");
+const {
+  uploadToFTP,
+  uploadFile,
+  copyFile,
+  downloadFile,
+} = require("./ftpUtils");
 
 const displayUrl = "https://wsaseno.de/digiOH_files/";
 const imageLocation = ""; //"_sfpg_data/image/";
 
 const path = require("path");
 const filePrefix = "Gambar_robot_";
-const subFolderGeneratedImage = ""; // "DigiOH_generated_images/"; 
+const subFolderGeneratedImage = ""; // "DigiOH_generated_images/";
 
 function getLightboxApi() {
   const config = getLightxConfig();
-  return config.lightXApi;  
+  return config.lightXApi;
 }
 
 const LightXEditorAiType = Object.freeze({
-  CARTOON:              'https://api.lightxeditor.com/external/api/v1/cartoon',
-  CARICATURE:           'https://api.lightxeditor.com/external/api/v1/caricature',
-  AVATAR:               'https://api.lightxeditor.com/external/api/v1/avatar',
-  AVATAR2:              'https://api.lightxeditor.com/external/api/v1/avatar',
-  PRODUCT_PHOTOSHOOT:   'https://api.lightxeditor.com/external/api/v1/product-photoshoot',
-  BACKGROUND_GENERATOR: 'https://api.lightxeditor.com/external/api/v1/background-generator',
-  TEXT2IMAGE:           'https://api.lightxeditor.com/external/api/v1/text2image',
-  PORTRAIT:             'https://api.lightxeditor.com/external/api/v1/portrait',
-  FACE_SWAP:            'https://api.lightxeditor.com/external/api/v1/face-swap',
-  OUTFIT:               'https://api.lightxeditor.com/external/api/v1/outfit',
+  CARTOON: "https://api.lightxeditor.com/external/api/v1/cartoon",
+  CARICATURE: "https://api.lightxeditor.com/external/api/v1/caricature",
+  AVATAR: "https://api.lightxeditor.com/external/api/v1/avatar",
+  AVATAR2: "https://api.lightxeditor.com/external/api/v1/avatar",
+  PRODUCT_PHOTOSHOOT:
+    "https://api.lightxeditor.com/external/api/v1/product-photoshoot",
+  BACKGROUND_GENERATOR:
+    "https://api.lightxeditor.com/external/api/v1/background-generator",
+  TEXT2IMAGE: "https://api.lightxeditor.com/external/api/v1/text2image",
+  PORTRAIT: "https://api.lightxeditor.com/external/api/v1/portrait",
+  FACE_SWAP: "https://api.lightxeditor.com/external/api/v1/face-swap",
+  OUTFIT: "https://api.lightxeditor.com/external/api/v1/outfit",
   //IMAGE2IMAGE:          'https://api.lightxeditor.com/external/api/v1/image2image',
   //SKETCH2IMAGE:         'https://api.lightxeditor.com/external/api/v1/sketch2image',
-  HAIRSTYLE:            'https://api.lightxeditor.com/external/api/v1/hairstyle',
-  AIFILTER:             'https://api.lightxeditor.com/external/api/v2/aifilter',
-  AIVIRTUALTRYON:       'https://api.lightxeditor.com/external/api/v2/aivirtualtryon',
-  HEADSHOT:             'https://api.lightxeditor.com/external/api/v2/headshot',
-  REMOVE_BACKGROUND:    'https://api.lightxeditor.com/external/api/v1/remove-background',
+  HAIRSTYLE: "https://api.lightxeditor.com/external/api/v1/hairstyle",
+  AIFILTER: "https://api.lightxeditor.com/external/api/v2/aifilter",
+  AIVIRTUALTRYON: "https://api.lightxeditor.com/external/api/v2/aivirtualtryon",
+  HEADSHOT: "https://api.lightxeditor.com/external/api/v2/headshot",
+  REMOVE_BACKGROUND:
+    "https://api.lightxeditor.com/external/api/v1/remove-background",
 });
 
 function getDataForLightX(imageUrl, aiTypeKey) {
@@ -146,10 +147,12 @@ function getDataForLightX(imageUrl, aiTypeKey) {
 }
 
 function getAiTypeKeyByValue(value) {
-  return Object.keys(LightXEditorAiType).find(key => LightXEditorAiType[key] === value);
+  return Object.keys(LightXEditorAiType).find(
+    (key) => LightXEditorAiType[key] === value,
+  );
 }
 
-async function generatedImage(imageUrl, selectedApiKey) {  
+async function generatedImage(imageUrl, selectedApiKey) {
   console.log(`Generated Image With: ${imageUrl}`);
   console.log(`Generated Image With: ${selectedApiKey}`);
   console.log("------------------------------");
@@ -158,19 +161,21 @@ async function generatedImage(imageUrl, selectedApiKey) {
   const data = getDataForLightX(imageUrl, selectedApiKey);
   const options = getFetchOptions(data);
 
-  console.log(`url    : `);
+  console.log("url    : ");
   console.log(url);
-  console.log(`options:`);
+  console.log("options:");
   console.log(options);
-  console.log(`data   : `);
+  console.log("data   : ");
   console.log(data);
 
   const response = await fetch(url, options)
     .then((response) => {
       if (!response.ok) {
         console.log(response);
-        throw new Error(`>>>>Request failed with status code ${response.status}`);
-      } 
+        throw new Error(
+          `>>>>Request failed with status code ${response.status}`,
+        );
+      }
       return response.json();
     })
     .then((data) => {
@@ -178,7 +183,9 @@ async function generatedImage(imageUrl, selectedApiKey) {
       console.log(data);
       return data;
     })
-    .catch((error) => { console.error("Error:", error); });
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
   try {
     const statusCode = response.statusCode;
@@ -192,25 +199,30 @@ async function generatedImage(imageUrl, selectedApiKey) {
       ////////////////////////////////
       // get generated image URL based on orderId
       ////////////////////////////////
-      const generatedImageUrl = await tryGetImageUrl(orderId).then(async (imageUrl) => {
-        if (imageUrl) {
+      const generatedImageUrl = await tryGetImageUrl(orderId).then(
+        async (imageUrl) => {
+          if (imageUrl) {
+            const remoteFile =
+              subFolderGeneratedImage +
+              filePrefix +
+              selectedApiKey +
+              getFileNameFromImageUrl(imageUrl);
 
-          const remoteFile = subFolderGeneratedImage + filePrefix + selectedApiKey + getFileNameFromImageUrl(imageUrl);
+            console.log("-->Found:", imageUrl);
+            console.log("-->Found:", remoteFile);
 
-          console.log("-->Found:", imageUrl);
-          console.log("-->Found:", remoteFile);
-
-          /////////////////////////////////////////////////////////
-          const location = await copyFile(imageUrl, remoteFile);
-          const generatedImageLocation = `${displayUrl}${imageLocation}${remoteFile}`;
-          console.log(`-->after copy1: ${location}`);
-          console.log(`-->after copy2: ${generatedImageLocation}`);
-          return location;
-          /////////////////////////////////////////////////////////
-        } else {
-          console.log("Image URL not found after max tries");
-        }
-      });
+            /////////////////////////////////////////////////////////
+            const location = await copyFile(imageUrl, remoteFile);
+            const generatedImageLocation = `${displayUrl}${imageLocation}${remoteFile}`;
+            console.log(`-->after copy1: ${location}`);
+            console.log(`-->after copy2: ${generatedImageLocation}`);
+            return location;
+            /////////////////////////////////////////////////////////
+          } else {
+            console.log("Image URL not found after max tries");
+          }
+        },
+      );
       return generatedImageUrl;
     }
   } catch (error) {
@@ -225,7 +237,7 @@ async function tryGetImageUrl(orderId, maxTry = 10) {
 
   while (tried++ < maxTry) {
     console.log("tryGetImageUrl - get...");
-    imageUrl = await getImageUrl(orderId); 
+    imageUrl = await getImageUrl(orderId);
     if (imageUrl != null) break;
     console.log("tryGetImageUrl - break...");
     await sleep(3000); // sleep ms
@@ -236,7 +248,7 @@ async function tryGetImageUrl(orderId, maxTry = 10) {
 async function getImageUrl(orderId) {
   const url = "https://api.lightxeditor.com/external/api/v1/order-status"; //alwasys use this URL for order status
 
-  console.log(`getImageUrl - orderId: ${orderId}`);  
+  console.log(`getImageUrl - orderId: ${orderId}`);
   const options = getFetchOptions({ orderId: orderId });
 
   const response = await fetch(url, options)
@@ -268,16 +280,16 @@ async function getImageUrl(orderId) {
 
 function getFileNameFromImageUrl(imageUrl) {
   const pathname = new URL(imageUrl).pathname;
-  const filename = path.basename(pathname);    
-  return filename
+  const filename = path.basename(pathname);
+  return filename;
 }
 
 function getFetchOptions(data) {
   const options = {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': getLightboxApi(),
+      "Content-Type": "application/json",
+      "x-api-key": getLightboxApi(),
     },
     body: JSON.stringify(data),
   };

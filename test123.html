@@ -1,155 +1,162 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>DigiOH AI Photobox</title>
     <meta name="viewport" content="width=device-width" />
     <style>
-        body {
-            font-family: Helvetica, sans-serif;
-            margin: 2em;
-            background: #f7f7f7;
-        }
-        h1 {
-            margin-top: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 2em;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .form-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1em;
-        }
-        .form-row label {
-            flex: 0 0 150px;
-            font-weight: bold;
-        }
-        .form-row input[type="text"],
-        .form-row input[type="password"] {
-            flex: 1 1 auto;
-            padding: 0.5em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        #results {
-            margin: 2em 0;
-            padding: 1em;
-            border: 1px solid #ccc;
-            background: #eee;
-            border-radius: 4px;
-            text-align: center;
-        }
-        .button-row {
-            text-align: right;
-        }
-        button, input[type="button"] {
-            padding: 0.5em 1.5em;
-            border: none;
-            border-radius: 4px;
-            background: #0078d7;
-            color: #fff;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        button:active, input[type="button"]:active {
-            background: #005fa3;
-        }
-        #my_camera {
-            margin-bottom: 2em;
-        }
+      body {
+        font-family: Helvetica, sans-serif;
+        margin: 2em;
+        background: #f7f7f7;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+      }
+      .form-row label {
+        flex: 0 0 150px;
+        font-weight: bold;
+      }
+      .form-row input[type="text"],
+      .form-row input[type="password"] {
+        flex: 1 1 auto;
+        padding: 0.5em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      #results {
+        margin: 2em 0;
+        padding: 1em;
+        border: 1px solid #ccc;
+        background: #eee;
+        border-radius: 4px;
+        text-align: center;
+      }
+      .button-row {
+        text-align: right;
+      }
+      button,
+      input[type="button"] {
+        padding: 0.5em 1.5em;
+        border: none;
+        border-radius: 4px;
+        background: #0078d7;
+        color: #fff;
+        font-size: 1em;
+        cursor: pointer;
+      }
+      button:active,
+      input[type="button"]:active {
+        background: #005fa3;
+      }
+      #my_camera {
+        margin-bottom: 2em;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>DigiOH Photobox</h1>
-        <div id="results">Captured image will appear here...</div>
-        <div id="my_camera"></div>
+      <h1>DigiOH Photobox</h1>
+      <div id="results">Captured image will appear here...</div>
+      <div id="my_camera"></div>
 
-        <form id="configForm" autocomplete="off">
-            <h2>Configuration</h2>
-            <div class="form-row">
-                <label for="ftpAddress">FTP Address:</label>
-                <input type="text" id="ftpAddress" name="ftpAddress" required>
-            </div>
-            <div class="form-row">
-                <label for="ftpUsername">Username:</label>
-                <input type="text" id="ftpUsername" name="ftpUsername" required>
-            </div>
-            <div class="form-row">
-                <label for="ftpPassword">Password:</label>
-                <input type="password" id="ftpPassword" name="ftpPassword" required>
-            </div>
-            <div class="button-row">
-                <button type="submit">Save Config</button>
-                <button type="button" id="loadBtn">Load Config</button>
-            </div>
-        </form>
-
-        <div class="button-row" style="margin-top:2em;">
-            <input type="button" value="Generate AI" onClick="take_snapshot()">
+      <form id="configForm" autocomplete="off">
+        <h2>Configuration</h2>
+        <div class="form-row">
+          <label for="ftpAddress">FTP Address:</label>
+          <input type="text" id="ftpAddress" name="ftpAddress" required />
         </div>
+        <div class="form-row">
+          <label for="ftpUsername">Username:</label>
+          <input type="text" id="ftpUsername" name="ftpUsername" required />
+        </div>
+        <div class="form-row">
+          <label for="ftpPassword">Password:</label>
+          <input type="password" id="ftpPassword" name="ftpPassword" required />
+        </div>
+        <div class="button-row">
+          <button type="submit">Save Config</button>
+          <button type="button" id="loadBtn">Load Config</button>
+        </div>
+      </form>
+
+      <div class="button-row" style="margin-top: 2em">
+        <input type="button" value="Generate AI" onClick="take_snapshot()" />
+      </div>
     </div>
 
     <script>
-        // Save config to localStorage
-        document.getElementById('configForm').onsubmit = function(e) {
-            e.preventDefault();
-            const config = {
-                ftpAddress: document.getElementById('ftpAddress').value,
-                ftpUsername: document.getElementById('ftpUsername').value,
-                ftpPassword: document.getElementById('ftpPassword').value
-            };
-            localStorage.setItem('ftpConfig', JSON.stringify(config));
-            alert("Configuration saved!");
+      // Save config to localStorage
+      document.getElementById("configForm").onsubmit = function (e) {
+        e.preventDefault();
+        const config = {
+          ftpAddress: document.getElementById("ftpAddress").value,
+          ftpUsername: document.getElementById("ftpUsername").value,
+          ftpPassword: document.getElementById("ftpPassword").value,
+        };
+        localStorage.setItem("ftpConfig", JSON.stringify(config));
+        alert("Configuration saved!");
+      };
+
+      // Load config from localStorage
+      document.getElementById("loadBtn").onclick = function () {
+        const config = JSON.parse(localStorage.getItem("ftpConfig") || "{}");
+        document.getElementById("ftpAddress").value = config.ftpAddress || "";
+        document.getElementById("ftpUsername").value = config.ftpUsername || "";
+        document.getElementById("ftpPassword").value = config.ftpPassword || "";
+        alert("Configuration loaded!");
+      };
+
+      // Example take_snapshot function (replace with your actual logic)
+      async function take_snapshot() {
+        const url = "https://api.lightxeditor.com/external/api/v1/avatar";
+        const apiKey =
+          "de282af09406415b85611ad60b3037ab_b70337b2ecf44d059f460b7b33660f00_andoraitools";
+
+        const data = {
+          imageUrl:
+            "https://wsaseno.de/digiOH_files/_sfpg_data/image/gambar_robot_20250724173132.jpeg",
+          styleImageUrl:
+            "https://d2v5dzhdg4zhx3.cloudfront.net/ai_avatar_styles_thumbs/male/steampunk.jpg",
+          textPrompt: "create a male avatar with steampunk style",
         };
 
-        // Load config from localStorage
-        document.getElementById('loadBtn').onclick = function() {
-            const config = JSON.parse(localStorage.getItem('ftpConfig') || '{}');
-            document.getElementById('ftpAddress').value = config.ftpAddress || '';
-            document.getElementById('ftpUsername').value = config.ftpUsername || '';
-            document.getElementById('ftpPassword').value = config.ftpPassword || '';
-            alert("Configuration loaded!");
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+          },
+          body: JSON.stringify(data),
         };
 
-        // Example take_snapshot function (replace with your actual logic)
-        async function take_snapshot() {
-            const url = 'https://api.lightxeditor.com/external/api/v1/avatar';
-            const apiKey = 'de282af09406415b85611ad60b3037ab_b70337b2ecf44d059f460b7b33660f00_andoraitools';
-
-            const data = {
-                "imageUrl": "https://wsaseno.de/digiOH_files/_sfpg_data/image/gambar_robot_20250724173132.jpeg",
-                "styleImageUrl": "https://d2v5dzhdg4zhx3.cloudfront.net/ai_avatar_styles_thumbs/male/steampunk.jpg",
-                "textPrompt": "create a male avatar with steampunk style"
-            };
-
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey
-                },
-                body: JSON.stringify(data)
-            };
-
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) {
-                    throw new Error(`HTTP error, status = ${response.status}`);
-                }
-                const blob = await response.blob();
-                const objectURL = URL.createObjectURL(blob);
-                document.getElementById("results").innerHTML = `<img src="${objectURL}" alt="AI Result" style="max-width:100%;">`;
-            } catch (error) {
-                document.getElementById("results").textContent = "Error: " + error.message;
-            }
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
+          }
+          const blob = await response.blob();
+          const objectURL = URL.createObjectURL(blob);
+          document.getElementById("results").innerHTML =
+            `<img src="${objectURL}" alt="AI Result" style="max-width:100%;">`;
+        } catch (error) {
+          document.getElementById("results").textContent =
+            "Error: " + error.message;
         }
+      }
     </script>
-</body>
+  </body>
 </html>
