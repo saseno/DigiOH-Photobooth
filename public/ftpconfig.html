@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DigiOH PhotoBox FTP Configuration</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    h2 { text-align: center; }
+    .form-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1em;
+    }
+    .form-row label {
+      flex: 0 0 200px;
+    }
+    .form-row input[type="text"],
+    .form-row input[type="password"] {
+      flex: 1 1 auto;
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .button-row {
+      text-align: right;
+      margin-top: 1em;
+    }
+    button {
+      padding: 0.5em 1.5em;
+      border: none;
+      border-radius: 4px;
+      background: #0078d7;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      margin-left: 0.5em;
+    }
+    button:active {
+      background: #005fa3;
+    }
+    #status {
+      margin-top: 1em;
+      text-align: center;
+      color: #0078d7;
+    }
+    .promptInput {
+      flex:1 1 auto; 
+      padding:0.5em; 
+      border:1px solid #ccc; 
+      border-radius:4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="configForm" autocomplete="off">
+      <div class="form-row">
+        <label for="ftpAddress">FTP Address:</label>
+        <input type="text" id="ftpAddress" required>
+      </div>
+      <div class="form-row">
+        <label for="ftpUsername">Username:</label>
+        <input type="text" id="ftpUsername" required>
+      </div>
+      <div class="form-row">
+        <label for="ftpPassword">Password:</label>
+        <input type="password" id="ftpPassword" required>
+      </div>
+
+      <div class="button-row">
+        <button type="submit">Save</button>
+        <button type="button" id="loadBtn">Load</button>
+      </div>
+    </form>
+    <div id="status"></div>
+  </div>
+<script>
+  // Save config to server
+  document.getElementById('configForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const config = {
+      ftpAddress: document.getElementById('ftpAddress').value,
+      ftpUsername: document.getElementById('ftpUsername').value,
+      ftpPassword: document.getElementById('ftpPassword').value,
+    };
+    const res = await fetch('/api/config_ftp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(config)
+    });
+    if (res.ok) {
+      document.getElementById('status').textContent = "Configuration saved to server!";
+    } else {
+      document.getElementById('status').textContent = "Failed to save configuration!";
+    }
+  };
+
+  // Load config from server
+  document.getElementById('loadBtn').onclick = async function() {
+    const res = await fetch('/api/config_ftp');
+    if (res.ok) {
+      const config = await res.json();
+      document.getElementById('ftpAddress').value = config.ftpAddress || '';
+      document.getElementById('ftpUsername').value = config.ftpUsername || '';
+      document.getElementById('ftpPassword').value = config.ftpPassword || '';
+      document.getElementById('status').textContent = "Configuration loaded from server!";
+    } else {
+      document.getElementById('status').textContent = "Failed to load configuration!";
+    }
+  };
+</script>
+</body>
+</html>
