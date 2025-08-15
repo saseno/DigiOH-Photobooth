@@ -6,10 +6,8 @@ const fs = require("fs");
 
 const bodyParser = require("body-parser");
 const configPathFtp = path.join(__dirname, "digiOH_PhotoBox_config_ftp.json");
-const configPathLightX = path.join(
-  __dirname,
-  "digiOH_PhotoBox_config_lightx.json",
-);
+const configPathLightX = path.join( __dirname, "digiOH_PhotoBox_config_lightx.json", );
+const configPathGemini = path.join( __dirname, "digiOH_PhotoBox_config_gemini.json", );
 
 const { pipeline } = require("stream");
 const { promisify } = require("util");
@@ -32,6 +30,7 @@ const {
 } = require("./ftpUtils");
 
 const { generatedImage, LightXEditorAiType } = require("./LightXstudio");
+const { processImageWithGemini } = require("./gemini");
 
 ////////////////////////////////
 // Uplolad photos to local server
@@ -108,6 +107,44 @@ app.post("/upload", async (req, res) => {
   }
 });
 
+////////////////////////////////
+// process image with Gemini
+////////////////////////////////
+app.post("/processWithGemini", async (req, res) => {
+  console.log("Received image upload request");
+  console.log("------------------------------");
+
+  //---- START - get picture data from camera, base64 encoded
+  const { base64data, imageName, selectedApi } = req.body;
+  if (!base64data || !imageName || !selectedApi) {
+    return res
+      .status(400)
+      .json({ error: "Missing base64data or imageName or selectedApi" });
+  }
+
+  const matches = base64data.match(/^data:(.+);base64,(.+)$/);
+  let buffer, extension;
+  if (matches) {
+    extension = matches[1].split("/")[1];
+    buffer = Buffer.from(matches[2], "base64");
+  } else {
+    // No data URL prefix, assume plain base64
+    extension = "bin";
+    buffer = Buffer.from(base64data, "base64");
+  }
+  //---- END - get picture data from camera, base64 encoded
+
+  const generatedImageResult = await processImageWithGemini(buffer.toString("base64"));
+  const qrDataUrl = await QRCode.toDataURL(generatedImageResult); // Always respond with JSON
+
+  res.json({
+      status: "ok",
+      imageUrl: generatedImageResult,
+      qr: qrDataUrl,
+    });
+
+});
+
 app.get("/api/qrcode", async (req, res) => {
   try {
     const url = "https://www.saseno.de";
@@ -159,4 +196,18 @@ app.get("/api/config_lightx", (req, res) => {
     res.json({});
   }
 });
+
 ////////////////////////////////
+// Google - Gemini API config
+////////////////////////////////
+app.post("/api/config_gemini", (req, res) => {
+  fs.writeFileSync(configPathGemini, JSON.stringify(req.body, null, 2), "utf8");
+  res.json({ status: "ok" });
+});
+app.get("/api/config_gemini", (req, res) => {
+  if (fs.existsSync(configPathGemini)) {
+    res.json(JSON.parse(fs.readFileSync(configPathGemini, "utf8")));
+  } else {
+    res.json({});
+  }
+});

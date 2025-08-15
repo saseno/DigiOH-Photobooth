@@ -16,6 +16,9 @@ document.getElementById("face_swap").onclick = async function () {
 document.getElementById("create_avatar2").onclick = async function () {
   take_snapshot("AVATAR2");
 };
+document.getElementById("gemini_generator").onclick = async function () {
+  take_snapshot_with_gemini();
+};
 
 document.getElementById("backButtonId").onclick = async function () {
   document.getElementById("results").innerHTML = "";
@@ -32,6 +35,64 @@ async function take_snapshot(selectedApi = LightXEditorAiType.CARTOON) {
   }).then((data_uri) => {
     return generateAiImage(data_uri, selectedApi);
   });
+}
+
+async function take_snapshot_with_gemini() {
+  await showCountdown(3); // Show countdown from 3
+  return new Promise((resolve, reject) => {
+    Webcam.snap(function (data_uri) {
+      resolve(data_uri);
+    });
+  }).then((data_uri) => {
+    return processWithGeminiApi(data_uri);
+  });
+}
+
+async function processWithGeminiApi(data_uri){
+var imageName = new Date().toISOString().split(".")[0].replace(/[^\d]/gi, "");
+
+  const data = {
+    base64data: data_uri,
+    imageName: imageName,
+    selectedApi: "gemini",
+  };
+
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  document.getElementById("spinner").style.display = "flex"; // Show spinner
+
+  try {
+    const response = await fetch("/processWithGemini", options);
+    let result;
+    const contentType = response.headers.get("content-type");
+    console.log(contentType);
+
+    if (contentType && contentType.includes("application/json")) {
+      result = await response.json();
+    } else {
+      result = await response.text();
+    }
+
+    console.log("Image generated successfully:");
+    console.log(result);
+
+    document.getElementById("results").innerHTML =
+      `<img src="${result.imageUrl}" alt="Result Image" />`;
+    document.getElementById("qrcode_viewer").innerHTML =
+      `<img src="${result.qr}" alt="Result Image" />`;
+    document.getElementById("backButton").style.display = "flex";
+    document.getElementById("qrcode_viewer").style.display = "flex";
+  } catch (error) {
+    console.error("Error generating image:", error);
+    // Handle error appropriately (e.g., display an error message)
+  } finally {
+    document.getElementById("spinner").style.display = "none"; // Hide spinner
+  }
+
 }
 
 async function generateAiImage(data_uri, selectedApi) {

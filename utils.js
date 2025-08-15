@@ -8,10 +8,8 @@ const path = require("path");
 const sharp = require("sharp");
 
 const configPathFtp = path.join(__dirname, "digiOH_PhotoBox_config_ftp.json");
-const configPathLightX = path.join(
-  __dirname,
-  "digiOH_PhotoBox_config_lightx.json",
-);
+const configPathLightX = path.join( __dirname, "digiOH_PhotoBox_config_lightx.json", );
+const configPathGemini = path.join( __dirname, "digiOH_PhotoBox_config_gemini.json", );
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,6 +18,13 @@ function sleep(ms) {
 function getLightxConfig() {
   if (fs.existsSync(configPathLightX)) {
     const config = JSON.parse(fs.readFileSync(configPathLightX, "utf8"));
+    return config;
+  }
+}
+
+function getGeminiConfig() {
+  if (fs.existsSync(configPathGemini)) {
+    const config = JSON.parse(fs.readFileSync(configPathGemini, "utf8"));
     return config;
   }
 }
@@ -57,4 +62,5 @@ module.exports = {
   getLightxConfig,
   getFtpConfig,
   addWatermark,
+  getGeminiConfig,
 };
